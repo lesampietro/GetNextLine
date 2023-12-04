@@ -28,3 +28,5 @@ void	ft_is_newline(t_list **list)
 	while (*list != '\n')
 		list++;
 }
+
+ahahah
