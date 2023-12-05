@@ -47,18 +47,12 @@ void	ft_tideup_list(t_list **list)
 	while (last_node->str_buffer[i] != '\0' \ 
 		&& last_node->str_buffer[i] != '\n')
 		i++;
-		while (last_node->str_buffer[i])
-			buffer[j++] = last_node->str_buffer[i++];
-		buffer[j] = '\0';
-		clean_node->str_buffer = buffer;
-		clean_node->next = NULL;
-		ft_lstadd_back(list, clean_node);
-		return ;
-	}
-			i++;
-		}
-		last_node = last_node->next;
-	}
+	while (last_node->str_buffer[i] != '\0' && last_node->str_buffer[i++])
+		buffer[j++] = last_node->str_buffer[i++];
+	buffer[j] = '\0';
+	clean_node->str_buffer = buffer;
+	clean_node->next = NULL;
+	ft_dealloc(list, clean_node, buffer);
 }
 
 void	ft_add_new_str(t_list **list, char *buffer)
@@ -70,10 +64,10 @@ void	ft_add_new_str(t_list **list, char *buffer)
 	new_node = malloc(sizeof(t_list));
 	if (new_node == NULL)
 		return (NULL);
-	if (NULL == *list)
-		return (NULL);
 	if (last_node == NULL)
 		*list = new_node;
+	else
+		last_node->next = new_node;
 	new_node->str_buffer = buffer;
 	new_node->next = NULL;
 }
@@ -83,7 +77,7 @@ void	ft_create_list(t_list **list, int fd)
 	int		chars_read;
 	char	*buffer;
 
-	while (!ft_is_newline(*list))
+	while (!ft_find_newline(*list))
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
@@ -113,4 +107,17 @@ char	*ft_get_next_line(int fd)
 	next_line = ft_get_line(list);
 	ft_tideup_list(&list);
 	return (next_line);
+}
+
+int	main()
+{
+	int		fd;
+	int		lines;
+	char	*line;
+
+	lines = 1;
+	fd = open("test.txt", O_RDONLY);
+	while ((line = ft_get_next_line(fd)));
+		printf("%d->%s\n", lines++, line);
+	return (0);
 }
