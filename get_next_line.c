@@ -15,22 +15,51 @@
 char	*ft_get_line(t_list *list)
 {
 	int		str_len;
-	char	*next_line;
+	char	*next_str;
 
+	str_len = 0;
 	if (NULL == list)
 		return (NULL);
 	str_len = ft_line_len(list);
-	next_line = malloc((str_len + 1) * sizeof(char));
-	if (next_line == NULL)
+	next_str = malloc(str_len + 1);
+	if (next_str == NULL)
 		return (NULL);
-	ft_linecpy(list, next_line);
-	return (next_line);
+	ft_strcpy(list, next_str);
+	return (next_str);
 }
 
-// void	ft_clean_input(t_list **list)
-// {
+void	ft_tideup_list(t_list **list)
+{
+	t_list	*last_node;
+	t_list	*clean_node;
+	int		i;
+	int		n;
+	char	*buffer;
+
+	buffer = malloc(BUFFER_SIZE + 1);
+	clean_node = malloc(sizeof(t_list));
+	if (buffer == NULL || clean_node == NULL)
+		return (NULL);
+	last_node == ft_find_last_node(*list);
 	
-// }
+	i = 0;
+	n = 0;
+	while (last_node->str_buffer[i] != '\0' \ 
+		&& last_node->str_buffer[i] != '\n')
+		i++;
+		while (last_node->str_buffer[i])
+			buffer[j++] = last_node->str_buffer[i++];
+		buffer[j] = '\0';
+		clean_node->str_buffer = buffer;
+		clean_node->next = NULL;
+		ft_lstadd_back(list, clean_node);
+		return ;
+	}
+			i++;
+		}
+		last_node = last_node->next;
+	}
+}
 
 void	ft_add_new_str(t_list **list, char *buffer)
 {
@@ -82,6 +111,6 @@ char	*ft_get_next_line(int fd)
 	if (list == NULL)
 		return (NULL);
 	next_line = ft_get_line(list);
-	ft_clean_input(&list);
+	ft_tideup_list(&list);
 	return (next_line);
 }
