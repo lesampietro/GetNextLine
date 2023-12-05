@@ -6,7 +6,7 @@
 /*   By: lsampiet <lsampiet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:04:26 by lsampiet          #+#    #+#             */
-/*   Updated: 2023/11/30 21:40:46 by lsampiet         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:12:01 by lsampiet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,12 @@ t_list	*ft_find_last_node(t_list *list)
 	return (list);
 }
 
-
 void	*ft_strcpy(t_list *list, char *nxt_str)
 {
 	int	i;
 	int	n;
 
 	n = 0;
-	if (list == NULL)
-		return (NULL);
 	while (list)
 	{
 		i = 0;
@@ -72,13 +69,14 @@ void	*ft_strcpy(t_list *list, char *nxt_str)
 		list = list->next;
 	}
 	nxt_str[n] = '\0';
+	return (nxt_str);
 }
 
 int	ft_find_newline(t_list *list)
 {
 	int	i;
 
-	if(list == NULL)
+	if (list == NULL)
 		return (0);
 	while (list)
 	{
@@ -94,22 +92,22 @@ int	ft_find_newline(t_list *list)
 	return (0);
 }
 
-void	ft_dealloc(t_list **list, t_list *clean_node, char *buffer)
+void	ft_dealloc(t_list *list, t_list *clean_node, char *buffer)
 {
 	t_list	*tmp;
 
-	if (*list == NULL)
-		return (NULL);
-	while (*list)
+	if (list == NULL)
+		return ;
+	while (list)
 	{
-		tmp = (*list)->next;
-		free ((*list)->str_buffer);
-		free(*list);
-		*list = temp;
+		tmp = (list)->next;
+		free ((list)->str_buffer);
+		free(list);
+		list = tmp;
 	}
-	*list = NULL;
-	if(clean_node->str_buffer[0])
-		*list = clean_node;
+	list = NULL;
+	if (clean_node->str_buffer[0])
+		list = clean_node;
 	else
 	{
 		free(clean_node);

@@ -6,7 +6,7 @@
 /*   By: lsampiet <lsampiet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:03:51 by lsampiet          #+#    #+#             */
-/*   Updated: 2023/11/30 21:29:38 by lsampiet         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:38:45 by lsampiet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,28 @@ char	*ft_get_line(t_list *list)
 void	ft_tideup_list(t_list **list)
 {
 	t_list	*last_node;
-	t_list	*clean_node;
+	t_list	*new_node;
 	int		i;
 	int		n;
 	char	*buffer;
 
-	buffer = malloc(BUFFER_SIZE + 1);
-	clean_node = malloc(sizeof(t_list));
-	if (buffer == NULL || clean_node == NULL)
-		return (NULL);
-	last_node == ft_find_last_node(*list);
-	
 	i = 0;
 	n = 0;
-	while (last_node->str_buffer[i] != '\0' \ 
+	buffer = malloc(BUFFER_SIZE + 1);
+	new_node = malloc(sizeof(t_list));
+	if (buffer == NULL || new_node == NULL)
+		return ;
+	last_node = ft_find_last_node(*list);
+	while (last_node->str_buffer[i] != '\0' \
 		&& last_node->str_buffer[i] != '\n')
 		i++;
-	while (last_node->str_buffer[i] != '\0' && last_node->str_buffer[i++])
-		buffer[j++] = last_node->str_buffer[i++];
-	buffer[j] = '\0';
-	clean_node->str_buffer = buffer;
-	clean_node->next = NULL;
-	ft_dealloc(list, clean_node, buffer);
+	while (last_node->str_buffer[i] != '\0' \
+		&& last_node->str_buffer[i++] != '\0')
+		buffer[n++] = last_node->str_buffer[i];
+	buffer[n] = '\0';
+	new_node->str_buffer = buffer;
+	new_node->next = NULL;
+	ft_dealloc(*list, new_node, buffer);
 }
 
 void	ft_add_new_str(t_list **list, char *buffer)
@@ -63,7 +63,7 @@ void	ft_add_new_str(t_list **list, char *buffer)
 	last_node = ft_find_last_node(*list);
 	new_node = malloc(sizeof(t_list));
 	if (new_node == NULL)
-		return (NULL);
+		return ;
 	if (last_node == NULL)
 		*list = new_node;
 	else
@@ -81,43 +81,35 @@ void	ft_create_list(t_list **list, int fd)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (buffer == NULL)
-			return (NULL);
+			return ;
 		chars_read = read(fd, buffer, BUFFER_SIZE);
 		if (!chars_read)
 		{
 			free(buffer);
-			return (NULL);
+			return ;
 		}
 		buffer[chars_read] = '\0';
 		ft_add_new_str(list, buffer);
 	}
 }
 
-char	*ft_get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static t_list	*list;
 	char			*next_line;
 
 	list = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (read(fd, &next_line, 0) < 0)
+	{
+		ft_dealloc(&list[fd], NULL, NULL);
+		return (NULL);
+	}	
 	ft_create_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
 	next_line = ft_get_line(list);
 	ft_tideup_list(&list);
 	return (next_line);
-}
-
-int	main()
-{
-	int		fd;
-	int		lines;
-	char	*line;
-
-	lines = 1;
-	fd = open("test.txt", O_RDONLY);
-	while ((line = ft_get_next_line(fd)));
-		printf("%d->%s\n", lines++, line);
-	return (0);
 }
