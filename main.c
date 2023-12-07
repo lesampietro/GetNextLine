@@ -18,7 +18,7 @@ int	main(void)
 	int		fd;
 	char	*line;
 
-	fd = open("/nfs/homes/lsampiet/Documents/example.txt", O_RDONLY);
+	fd = open("Users/lsamp/Desktop/GetNextLine/example.txt", O_RDONLY);
 	line = get_next_line(fd);
 	printf("call_01->%s", line);
 	line = get_next_line(fd);
