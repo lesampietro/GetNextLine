@@ -6,7 +6,7 @@
 /*   By: lsampiet <lsampiet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:04:26 by lsampiet          #+#    #+#             */
-/*   Updated: 2023/12/05 18:12:01 by lsampiet         ###   ########.fr       */
+/*   Updated: 2023/12/09 16:35:33 by lsampiet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,14 @@ void	*ft_copy_line(t_list *list, char *nxt_str)
 			{
 				nxt_str[n++] = '\n';
 				nxt_str[n] = '\0';
-				return ;
+				return (nxt_str);
 			}
 			nxt_str[n++] = list->str_buffer[i++];
 		}
 		list = list->next;
 	}
 	nxt_str[n] = '\0';
+	return (nxt_str);
 }
 
 void	ft_dealloc(t_list **list, t_list *clean_node, char *buffer)

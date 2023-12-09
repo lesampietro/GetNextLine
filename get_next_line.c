@@ -6,7 +6,7 @@
 /*   By: lsampiet <lsampiet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:03:51 by lsampiet          #+#    #+#             */
-/*   Updated: 2023/12/05 18:38:45 by lsampiet         ###   ########.fr       */
+/*   Updated: 2023/12/09 17:05:28 by lsampiet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ char	*get_next_line(int fd)
 	static t_list	*list;
 	char			*next_line;
 
-	list = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
 		if (list != NULL)
@@ -119,9 +118,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}	
 	ft_create_list(&list, fd);
-	next_line = ft_get_line(list);
+	next_line = ft_get_line(&list);
 	ft_tideup_list(&list);
 	return (next_line);
 }
-
-//(read(fd, &next_line, 0) < 0)
